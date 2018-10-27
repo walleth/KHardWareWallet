@@ -66,6 +66,17 @@ class MainActivity : AppCompatActivity() {
 
                     channel.initWithNewKey()
 
+                    currentInfoText += "\nNew Key uploaded"
+                }
+
+                R.id.mode_radio_remove_key -> {
+
+                    channel.verifyPIN("000000")
+
+                    channel.removeKey()
+
+                    currentInfoText += "\nKey removed"
+
                 }
 
             }

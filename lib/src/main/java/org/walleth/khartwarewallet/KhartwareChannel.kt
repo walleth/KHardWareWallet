@@ -65,6 +65,10 @@ class KhartwareChannel(cardChannel: CardChannel) {
         cmdSet.loadKey(createSecp256k1KeyPair()).checkOK()
     }
 
+    fun removeKey() {
+        cmdSet.removeKey()
+    }
+
     fun verifyPIN(pin: String) {
         cmdSet.verifyPIN(pin).checkOK()
     }

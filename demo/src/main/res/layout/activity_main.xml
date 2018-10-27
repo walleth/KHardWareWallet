@@ -37,6 +37,14 @@
                     android:id="@+id/mode_radio_new_key"
                     android:text="Set new Key"
             />
+
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_remove_key"
+                    android:text="Remove Key"
+            />
         </RadioGroup>
         <TextView
                 android:layout_width="wrap_content"
