@@ -4,6 +4,7 @@ import android.nfc.NfcAdapter.getDefaultAdapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
 
@@ -30,19 +31,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         cardManager.onCardConnectedListener = { channel ->
-            currentInfoText = "card detected"
+            currentInfoText = "Card detected"
 
             channel.autoPair("WalletAppletTest")
-            currentInfoText += "\ncard paired"
+            currentInfoText += "\nCard paired"
 
             channel.autoOpenSecureChannel()
-            currentInfoText += "\nsecure channel established"
+            currentInfoText += "\nSecure channel established"
 
-            val status = channel.getStatus().toString()
+            when (mode_radio_group.checkedRadioButtonId) {
+                R.id.mode_radio_check_status -> {
 
-            currentInfoText += "\ncard status $status"
+                    val status = channel.getStatus().toString()
 
-            channel.verifyPIN("000000")
+                    currentInfoText += "\nCard status $status"
+
+                    channel.verifyPIN("000000")
+                }
+
+
+                R.id.mode_radio_check_generate_mnemonic -> {
+
+                    val mnemonic = channel.generateMnemonic(4, WORDLIST_ENGLISH)
+
+                    currentInfoText += "\nGenerated Mnemonic $mnemonic"
+
+                    channel.verifyPIN("000000")
+                }
+
+            }
 
             channel.unpairOthers()
             channel.autoUnpair()

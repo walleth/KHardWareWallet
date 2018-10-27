@@ -1,5 +1,9 @@
 buildscript {
-    ext.kotlin_version = '1.2.71'
+    ext {
+        kotlin_version = '1.2.71'
+        kethereum_version = '0.63'
+    }
+
     repositories {
         google()
         jcenter()

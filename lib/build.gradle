@@ -18,6 +18,8 @@ dependencies {
 
     implementation 'com.github.status-im:hardwallet-lite-android:v1.0'
 
+    api "com.github.walleth.kethereum:bip39:$kethereum_version"
+
     implementation 'com.payneteasy:ber-tlv:1.0-8'
 
 }
