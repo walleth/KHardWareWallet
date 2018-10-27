@@ -40,4 +40,11 @@ class KhartwareChannel(cardChannel: CardChannel) {
 
     }
 
+    fun verifyPIN(pin: String) {
+        cmdSet.verifyPIN(pin).checkOK()
+    }
+
+    fun unpairOthers() = cmdSet.unpairOthers()
+    fun autoUnpair() = cmdSet.autoUnpair()
+
 }

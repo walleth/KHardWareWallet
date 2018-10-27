@@ -41,6 +41,12 @@ class MainActivity : AppCompatActivity() {
             val status = channel.getStatus().toString()
 
             currentInfoText += "\ncard status $status"
+
+            channel.verifyPIN("000000")
+
+            channel.unpairOthers()
+            channel.autoUnpair()
+
         }
 
         cardManager.start()
