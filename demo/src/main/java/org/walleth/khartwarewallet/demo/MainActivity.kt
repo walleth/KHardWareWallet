@@ -1,10 +1,9 @@
 package org.walleth.khartwarewallet.demo
 
 import android.nfc.NfcAdapter.getDefaultAdapter
-import android.nfc.TagLostException
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import kotlinx.android.synthetic.main.activity_main.*
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
 
@@ -18,21 +17,35 @@ class MainActivity : AppCompatActivity() {
 
     private val cardManager by lazy { KHardwareManager() }
 
+    private var currentInfoText: String? = null
+        set(value) {
+            field = value
+            runOnUiThread {
+                info_text.text = field
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         cardManager.onCardConnectedListener = { channel ->
-            try {
-                channel.autoPair("WalletAppletTest")
-                channel.autoOpenSecureChannel()
-                Log.i(TAG, channel.getStatus().toString())
-            } catch (ignored: TagLostException) {} // this can happen - not a big deal
+            currentInfoText = "card detected"
 
+            channel.autoPair("WalletAppletTest")
+            currentInfoText += "\ncard paired"
+
+            channel.autoOpenSecureChannel()
+            currentInfoText += "\nsecure channel established"
+
+            val status = channel.getStatus().toString()
+
+            currentInfoText += "\ncard status $status"
         }
 
         cardManager.start()
     }
+
 
     public override fun onResume() {
         super.onResume()
