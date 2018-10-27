@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         cardManager.onCardConnectedListener = { channel ->
-            currentInfoText = "Card detected"
+            currentInfoText = "Card detected " + channel.cardInfo
 
             channel.autoPair("WalletAppletTest")
             currentInfoText += "\nCard paired"

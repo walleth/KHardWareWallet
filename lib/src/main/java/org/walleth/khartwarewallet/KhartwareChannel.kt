@@ -7,6 +7,8 @@ import im.status.hardwallet_lite_android.wallet.WalletAppletCommandSet
 import im.status.hardwallet_lite_android.wallet.WalletAppletCommandSet.GET_STATUS_P1_APPLICATION
 import org.kethereum.bip39.model.MnemonicWords
 import org.kethereum.crypto.SecureRandomUtils.secureRandom
+import org.kethereum.crypto.model.PublicKey
+import org.walleth.khex.toHexString
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.spec.ECGenParameterSpec
@@ -17,8 +19,25 @@ class KhartwareChannel(cardChannel: CardChannel) {
     private var cmdSet = WalletAppletCommandSet(cardChannel)
     private val blvParser by lazy { BerTlvParser() }
 
-    init {
-        cmdSet.select().checkOK()
+    val cardInfo: KhartwareCardInfo by lazy {
+
+
+        val data = cmdSet.select().checkOK().data
+
+        val list = blvParser.parse(data).list
+
+        if (list.size != 1 || !list.first().isTag(BerTag(0xa4))) {
+            throw IllegalArgumentException("Unexpected result data - expected single tag A4 but got $list")
+        }
+
+        val values = list.first().values
+        KhartwareCardInfo(
+            instanceUID = values[0].bytesValue.toHexString(),
+            pubKey = PublicKey(values[1].bytesValue),
+            version = KhartwareVardVersion(major = values[2].bytesValue[0], minor = values[2].bytesValue[1]),
+            remainingPairingSlots = values[3].intValue,
+            keyUID = values[4].bytesValue.toHexString()
+        )
     }
 
     fun autoPair(password: String) = cmdSet.autoPair(password)

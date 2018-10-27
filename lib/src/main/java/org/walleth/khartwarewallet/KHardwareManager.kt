@@ -63,7 +63,14 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
         isInvokingListener = true
 
         try {
-            onCardConnectedListener?.invoke(KhartwareChannel(CardChannel(isoDep)))
+            val channel = KhartwareChannel(CardChannel(isoDep))
+
+            val supportedVersion = KhartwareVardVersion(1, 2)
+            if (channel.cardInfo.version != supportedVersion) {
+                throw(IllegalStateException("Card version not supported. is:" + channel.cardInfo.version + " expected: " + supportedVersion))
+            }
+            onCardConnectedListener?.invoke(channel)
+
         } catch (ioe: IOException) {
             ioe.printStackTrace()
         } catch (ignored: TagLostException) {
