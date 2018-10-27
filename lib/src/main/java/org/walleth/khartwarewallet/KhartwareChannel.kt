@@ -31,9 +31,15 @@ class KhartwareChannel(cardChannel: CardChannel) {
         }
 
         val values = list.first().values
+        val pubKey = values[1].bytesValue
+
+        if (pubKey.first() != 4.toByte()) { // compression signaling
+            throw java.lang.IllegalStateException("public key must start with 0x04")
+        }
+
         KhartwareCardInfo(
             instanceUID = values[0].bytesValue.toHexString(),
-            pubKey = PublicKey(values[1].bytesValue),
+            pubKey = PublicKey(pubKey.copyOfRange(1, pubKey.size)),
             version = KhartwareVardVersion(major = values[2].bytesValue[0], minor = values[2].bytesValue[1]),
             remainingPairingSlots = values[3].intValue,
             keyUID = values[4].bytesValue.toHexString()

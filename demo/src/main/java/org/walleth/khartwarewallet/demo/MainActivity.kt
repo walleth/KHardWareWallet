@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
+import org.kethereum.crypto.toAddress
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
+import java.io.PrintWriter
+import java.io.StringWriter
 
 const val TAG = "MainActivity"
 
@@ -31,59 +34,71 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         cardManager.onCardConnectedListener = { channel ->
-            currentInfoText = "Card detected " + channel.cardInfo
 
-            channel.autoPair("WalletAppletTest")
-            currentInfoText += "\nCard paired"
+            try {
+                currentInfoText = "Card detected " + channel.cardInfo
 
-            channel.autoOpenSecureChannel()
-            currentInfoText += "\nSecure channel established"
+                currentInfoText += "\nCard address " + channel.cardInfo.pubKey.toAddress()
 
-            when (mode_radio_group.checkedRadioButtonId) {
-                R.id.mode_radio_check_status -> {
+                channel.autoPair("WalletAppletTest")
+                currentInfoText += "\nCard paired"
 
-                    val status = channel.getStatus().toString()
+                channel.autoOpenSecureChannel()
+                currentInfoText += "\nSecure channel established"
 
-                    currentInfoText += "\nCard status $status"
+                when (mode_radio_group.checkedRadioButtonId) {
+                    R.id.mode_radio_check_status -> {
 
-                    channel.verifyPIN("000000")
+                        val status = channel.getStatus().toString()
+
+                        currentInfoText += "\nCard status $status"
+
+                        channel.verifyPIN("000000")
+                    }
+
+
+                    R.id.mode_radio_check_generate_mnemonic -> {
+
+                        val mnemonic = channel.generateMnemonic(4, WORDLIST_ENGLISH)
+
+                        currentInfoText += "\nGenerated Mnemonic $mnemonic"
+
+                        channel.verifyPIN("000000")
+                    }
+
+
+                    R.id.mode_radio_new_key -> {
+
+                        channel.verifyPIN("000000")
+
+                        channel.initWithNewKey()
+
+                        currentInfoText += "\nNew Key uploaded"
+                    }
+
+                    R.id.mode_radio_remove_key -> {
+
+                        channel.verifyPIN("000000")
+
+                        channel.removeKey()
+
+                        currentInfoText += "\nKey removed"
+
+                    }
+
                 }
 
+                channel.unpairOthers()
+                channel.autoUnpair()
 
-                R.id.mode_radio_check_generate_mnemonic -> {
+            } catch (e: Exception) {
+                val sw = StringWriter()
+                e.printStackTrace(PrintWriter(sw))
+                val exceptionAsString = sw.toString()
 
-                    val mnemonic = channel.generateMnemonic(4, WORDLIST_ENGLISH)
-
-                    currentInfoText += "\nGenerated Mnemonic $mnemonic"
-
-                    channel.verifyPIN("000000")
-                }
-
-
-                R.id.mode_radio_new_key -> {
-
-                    channel.verifyPIN("000000")
-
-                    channel.initWithNewKey()
-
-                    currentInfoText += "\nNew Key uploaded"
-                }
-
-                R.id.mode_radio_remove_key -> {
-
-                    channel.verifyPIN("000000")
-
-                    channel.removeKey()
-
-                    currentInfoText += "\nKey removed"
-
-                }
-
+                currentInfoText += "\n\nException: " + e.message
+                currentInfoText += "\n\nTrace: $exceptionAsString"
             }
-
-            channel.unpairOthers()
-            channel.autoUnpair()
-
         }
 
         cardManager.start()
