@@ -59,6 +59,15 @@ class MainActivity : AppCompatActivity() {
                     channel.verifyPIN("000000")
                 }
 
+
+                R.id.mode_radio_new_key -> {
+
+                    channel.verifyPIN("000000")
+
+                    channel.initWithNewKey()
+
+                }
+
             }
 
             channel.unpairOthers()

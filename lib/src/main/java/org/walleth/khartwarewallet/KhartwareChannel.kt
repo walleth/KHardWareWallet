@@ -6,6 +6,10 @@ import im.status.hardwallet_lite_android.io.CardChannel
 import im.status.hardwallet_lite_android.wallet.WalletAppletCommandSet
 import im.status.hardwallet_lite_android.wallet.WalletAppletCommandSet.GET_STATUS_P1_APPLICATION
 import org.kethereum.bip39.model.MnemonicWords
+import org.kethereum.crypto.SecureRandomUtils.secureRandom
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.spec.ECGenParameterSpec
 
 
 class KhartwareChannel(cardChannel: CardChannel) {
@@ -55,8 +59,10 @@ class KhartwareChannel(cardChannel: CardChannel) {
             valuesList[2].intValue == 0xff,
             valuesList[3].intValue == 0xff
         )
+    }
 
-
+    fun initWithNewKey() {
+        cmdSet.loadKey(createSecp256k1KeyPair()).checkOK()
     }
 
     fun verifyPIN(pin: String) {
@@ -70,3 +76,11 @@ class KhartwareChannel(cardChannel: CardChannel) {
 
 // TODO replace with native uint when migrating to Kotlin 1.3
 fun Byte.toPositiveInt() = toInt() and 0xFF
+
+internal fun createSecp256k1KeyPair(): KeyPair {
+
+    val keyPairGenerator = KeyPairGenerator.getInstance("ECDSA")
+    val ecGenParameterSpec = ECGenParameterSpec("secp256k1")
+    keyPairGenerator.initialize(ecGenParameterSpec, secureRandom())
+    return keyPairGenerator.generateKeyPair()
+}
