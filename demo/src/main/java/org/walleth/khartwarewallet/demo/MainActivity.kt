@@ -1,15 +1,30 @@
 package org.walleth.khartwarewallet.demo
 
+import android.graphics.drawable.BitmapDrawable
 import android.nfc.NfcAdapter.getDefaultAdapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.view.View
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_main.*
+import net.glxn.qrgen.android.QRCode
+import org.kethereum.DEFAULT_GAS_LIMIT
+import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.kethereum.crypto.toAddress
+import org.kethereum.functions.encodeRLP
+import org.kethereum.model.Address
+import org.kethereum.model.ChainDefinition
+import org.kethereum.model.Transaction
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
+import org.walleth.khex.toHexString
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.math.BigInteger.ZERO
+import java.math.BigInteger.valueOf
 
 const val TAG = "MainActivity"
 
@@ -25,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         set(value) {
             field = value
             runOnUiThread {
-                info_text.text = field
+                info_text.text = Html.fromHtml(field)
+                info_text.movementMethod = LinkMovementMethod()
             }
         }
 
@@ -37,8 +53,6 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 currentInfoText = "Card detected " + channel.cardInfo
-
-                currentInfoText += "\nCard address " + channel.cardInfo.pubKey.toAddress()
 
                 channel.autoPair("WalletAppletTest")
                 currentInfoText += "\nCard paired"
@@ -56,6 +70,18 @@ class MainActivity : AppCompatActivity() {
                         channel.verifyPIN("000000")
                     }
 
+                    R.id.mode_radio_show_qr_code -> {
+                        channel.verifyPIN("000000")
+
+                        val address = channel.toPublicKey().toAddress()
+
+                        currentInfoText += "\nCard address $address"
+
+                        runOnUiThread {
+                            qrcode_image.setQRCode("ethereum:$address")
+                            qrcode_image.visibility = View.VISIBLE
+                        }
+                    }
 
                     R.id.mode_radio_check_generate_mnemonic -> {
 
@@ -83,6 +109,33 @@ class MainActivity : AppCompatActivity() {
                         channel.removeKey()
 
                         currentInfoText += "\nKey removed"
+
+                    }
+
+                    R.id.mode_radio_create_transaction -> {
+
+                        channel.verifyPIN("000000")
+
+                        val address = channel.toPublicKey().toAddress()
+
+                        val tx = Transaction(
+                            chain = ChainDefinition(4L),
+                            creationEpochSecond = null,
+                            from = address,
+                            gasLimit = DEFAULT_GAS_LIMIT,
+                            gasPrice = DEFAULT_GAS_PRICE,
+                            input = emptyList(),
+                            nonce = ZERO,
+                            to = Address("0x381e247bef0ebc21b6611786c665dd5514dcc31f"),
+                            txHash = null,
+                            value = valueOf(42L)
+                        )
+
+                        val rlp=channel.sign(tx).encodeRLP().toHexString()
+
+                        currentInfoText += "\nSigned transaction <a href='https://api-rinkeby.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=$rlp'>link</a>"
+
+                        currentInfoText += "\n\n from <a href='https://rinkeby.etherscan.io/address/$address'>link</a>"
 
                     }
 
@@ -114,4 +167,11 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         nfcAdapter?.disableReaderMode(this)
     }
+}
+
+fun ImageView.setQRCode(content: String) {
+    val drawable = BitmapDrawable(resources, QRCode.from(content).bitmap())
+    drawable.setAntiAlias(false)
+    drawable.isFilterBitmap = false
+    setImageDrawable(drawable)
 }

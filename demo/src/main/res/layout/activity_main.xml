@@ -38,14 +38,35 @@
                     android:text="Set new Key"
             />
 
-
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/mode_radio_remove_key"
                     android:text="Remove Key"
             />
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_show_qr_code"
+                    android:text="Show address QR-Code"
+            />
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_create_transaction"
+                    android:text="Create transaction"
+            />
+
         </RadioGroup>
+
+        <ImageView
+                android:id="@+id/qrcode_image"
+                android:visibility="gone"
+                android:layout_width="256dp"
+                android:layout_height="256dp"/>
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
