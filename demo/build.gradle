@@ -32,7 +32,7 @@ dependencies {
 
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
 
-    implementation project(":lib")
+    implementation project(':khardwarewallet')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
