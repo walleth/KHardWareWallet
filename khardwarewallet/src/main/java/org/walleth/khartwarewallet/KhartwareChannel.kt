@@ -95,8 +95,7 @@ class KhartwareChannel(cardChannel: CardChannel) {
         return KhartwareStatus(
             valuesList[0].intValue,
             valuesList[1].intValue,
-            valuesList[2].intValue == 0xff,
-            valuesList[3].intValue == 0xff
+            valuesList[2].intValue == 0xff
         )
     }
 
@@ -127,7 +126,7 @@ class KhartwareChannel(cardChannel: CardChannel) {
         val chainId = tx.chain!!.id
         val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId.toByte() }).keccak()
 
-        val signedTransaction = cmdSet.sign(encodeRLPHash, 1, true, true).checkOK().data
+        val signedTransaction = cmdSet.sign(encodeRLPHash).checkOK().data
 
         val parsed = blvParser.parse(signedTransaction)
 

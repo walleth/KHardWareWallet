@@ -6,6 +6,5 @@ package org.walleth.khartwarewallet
 data class KhartwareStatus(
     val pinRetryCount: Int,
     val pukRetryCount: Int,
-    val isKeyInitialized: Boolean,
-    val isKeyDerivationSupported: Boolean
+    val isKeyInitialized: Boolean
 )
