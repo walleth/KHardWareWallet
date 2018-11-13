@@ -65,7 +65,7 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
         try {
             val channel = KhartwareChannel(CardChannel(isoDep))
 
-            val supportedVersion = KhartwareVardVersion(1, 2)
+            val supportedVersion = KhartwareVardVersion(2, 0)
             if (channel.cardInfo.version != supportedVersion) {
                 throw(IllegalStateException("Card version not supported. is:" + channel.cardInfo.version + " expected: " + supportedVersion))
             }
