@@ -15,13 +15,6 @@
                 android:id="@+id/mode_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-            <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:id="@+id/mode_radio_check_status"
-                    android:text="Read Card Status"
-            />
 
             <RadioButton
                     android:layout_width="wrap_content"

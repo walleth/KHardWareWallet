@@ -7,7 +7,8 @@ import android.nfc.TagLostException
 import android.nfc.tech.IsoDep
 import android.os.SystemClock
 import android.util.Log
-import im.status.hardwallet_lite_android.io.CardChannel
+import im.status.keycard.android.NFCCardChannel
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.IOException
 import java.security.Security
 
@@ -23,7 +24,7 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
     fun isConnected() = isoDep != null && isoDep!!.isConnected
 
     init {
-        Security.insertProviderAt(org.spongycastle.jce.provider.BouncyCastleProvider(), 1)
+        Security.insertProviderAt(BouncyCastleProvider(), 0)
     }
 
     override fun onTagDiscovered(tag: Tag) {
@@ -63,11 +64,10 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
         isInvokingListener = true
 
         try {
-            val channel = KhartwareChannel(CardChannel(isoDep))
+            val channel = KhartwareChannel(NFCCardChannel(isoDep))
 
-            val supportedVersion = KhartwareVardVersion(2, 0)
-            if (channel.cardInfo.version != supportedVersion) {
-                throw(IllegalStateException("Card version not supported. is:" + channel.cardInfo.version + " expected: " + supportedVersion))
+            if (channel.cardInfo.isInitializedCard && channel.cardInfo.appVersionString != "2.1") {
+                throw(IllegalStateException("Card version not supported. is:" + channel.cardInfo.appVersionString + " expected: 2.1"))
             }
             onCardConnectedListener?.invoke(channel)
 
