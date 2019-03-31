@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.3.21'
-        kethereum_version = '0.74.4'
+        kethereum_version = '0.74.8'
     }
 
     repositories {
