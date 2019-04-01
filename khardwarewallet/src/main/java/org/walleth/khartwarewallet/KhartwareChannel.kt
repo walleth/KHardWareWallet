@@ -3,8 +3,10 @@ package org.walleth.khartwarewallet
 import com.payneteasy.tlv.BerTag
 import com.payneteasy.tlv.BerTlvParser
 import im.status.keycard.applet.ApplicationInfo
+import im.status.keycard.applet.ApplicationStatus.TLV_APPLICATION_STATUS_TEMPLATE
 import im.status.keycard.applet.KeycardCommandSet
 import im.status.keycard.applet.KeycardCommandSet.GET_STATUS_P1_APPLICATION
+import im.status.keycard.applet.TinyBERTLV
 import im.status.keycard.io.CardChannel
 import org.kethereum.bip39.model.MnemonicWords
 import org.kethereum.crypto.SecureRandomUtils.secureRandom
@@ -68,19 +70,15 @@ class KhartwareChannel(cardChannel: CardChannel) {
         }
 
     fun getStatus(): KhartwareStatus {
-        val bytes = cmdSet.getStatus(GET_STATUS_P1_APPLICATION).checkOK()
+        val bytes = cmdSet.getStatus(GET_STATUS_P1_APPLICATION).checkOK().data
 
-        val list = blvParser.parse(bytes.data).list
+        val tinyBERTLV = TinyBERTLV(bytes)
+        tinyBERTLV.enterConstructed(TLV_APPLICATION_STATUS_TEMPLATE.toInt())
 
-        if (list.size != 1 || !list.first().isTag(BerTag(0xa3))) {
-            throw IllegalStateException("unexpected status response")
-        }
-
-        val valuesList = list.first().values
         return KhartwareStatus(
-            valuesList[0].intValue,
-            valuesList[1].intValue,
-            valuesList[2].intValue == 0xff
+            tinyBERTLV.readInt(),
+            tinyBERTLV.readInt(),
+            tinyBERTLV.readBoolean()
         )
     }
 

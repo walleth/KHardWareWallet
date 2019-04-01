@@ -19,6 +19,12 @@
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_check_status"
+                    android:text="Status"
+            />
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/mode_radio_check_generate_mnemonic"
                     android:text="Generate Mnemonic"
             />

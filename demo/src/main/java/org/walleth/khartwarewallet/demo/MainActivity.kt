@@ -69,7 +69,14 @@ class MainActivity : AppCompatActivity() {
                     currentInfoText += "\nSecure channel established"
 
                     when (mode_radio_group.checkedRadioButtonId) {
+                        R.id.mode_radio_check_status -> {
 
+                            val status = channel.getStatus().toString()
+
+                            currentInfoText += "\nCard status $status"
+
+                            channel.verifyPIN("000000")
+                        }
                         R.id.mode_radio_show_qr_code -> {
                             channel.verifyPIN("000000")
 
