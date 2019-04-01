@@ -14,6 +14,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.kethereum.DEFAULT_GAS_LIMIT
 import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
+import org.kethereum.crypto.signedMessageToKey
 import org.kethereum.crypto.toAddress
 import org.kethereum.functions.encodeRLP
 import org.kethereum.model.Address
@@ -119,6 +120,17 @@ class MainActivity : AppCompatActivity() {
 
                         }
 
+                        R.id.mode_radio_sign_text -> {
+                            channel.verifyPIN("000000")
+                            val address = channel.toPublicKey().toAddress()
+
+                            val message = "foo"
+                            val signText = channel.signText(message)
+
+                            val revoceredAddress=signedMessageToKey("foo".toByteArray(),signText).toAddress()
+
+                            currentInfoText += "\nsigned by:$address\nrecovered:$revoceredAddress\n$signText"
+                        }
                         R.id.mode_radio_create_transaction -> {
 
                             channel.verifyPIN("000000")
@@ -138,8 +150,10 @@ class MainActivity : AppCompatActivity() {
                                 value = valueOf(42L)
                             )
 
-                            val rlp = channel.sign(tx).encodeRLP().toHexString()
+                            val signedTx = channel.sign(tx)
+                            val rlp = signedTx.encodeRLP().toHexString()
 
+                            currentInfoText += "\n ${signedTx.signatureData} \n"
                             currentInfoText += "\nSigned transaction <a href='https://api-goerli.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=$rlp'>link</a>"
 
                             currentInfoText += "\n\n from <a href='https://goerli.etherscan.io/address/$address'>address</a>"

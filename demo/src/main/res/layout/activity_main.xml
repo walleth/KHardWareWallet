@@ -50,7 +50,12 @@
                     android:id="@+id/mode_radio_show_qr_code"
                     android:text="Show address QR-Code"
             />
-
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_sign_text"
+                    android:text="Sign text"
+            />
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

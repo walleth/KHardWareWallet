@@ -1,6 +1,7 @@
 package org.walleth.khartwarewallet
 
 import com.payneteasy.tlv.BerTag
+import com.payneteasy.tlv.BerTlv
 import com.payneteasy.tlv.BerTlvParser
 import im.status.keycard.applet.ApplicationInfo
 import im.status.keycard.applet.ApplicationStatus.TLV_APPLICATION_STATUS_TEMPLATE
@@ -105,36 +106,21 @@ class KhartwareChannel(cardChannel: CardChannel) {
         publicKey!!
     }
 
+    fun signText(string: String): SignatureData {
+
+        val (leafList, recId) = sign(string.toByteArray().keccak())
+        return SignatureData(
+            r = BigInteger(leafList.first().bytesValue),
+            s = BigInteger(leafList.last().bytesValue),
+            v = (recId + 27).toByte()
+        )
+    }
+
     fun sign(tx: Transaction): SignedTransaction {
         val chainId = tx.chain!!
         val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId.toByte() }).keccak()
 
-        val signedTransaction = cmdSet.sign(encodeRLPHash).checkOK().data
-
-        val parsed = blvParser.parse(signedTransaction)
-
-        val rootList = parsed.list
-        if (rootList.size != 1 || rootList.first().tag != BerTag(0xa0)) {
-            throw java.lang.IllegalArgumentException("Unexpected Signing result " + rootList)
-        }
-
-        val innerList = rootList.first().values
-
-        if (innerList.size != 2 || innerList.last().tag != BerTag(0x30)) {
-            throw java.lang.IllegalArgumentException("Unexpected Signing result (level 2) " + innerList.size + " " + innerList.last().tag)
-        }
-
-        val leafList = innerList.last().values
-
-
-        if (leafList.size != 2 || leafList.first().tag != BerTag(0x02) || leafList.last().tag != BerTag(0x02)) {
-            throw java.lang.IllegalArgumentException("Unexpected Signing result (leaf) $leafList")
-        }
-
-        val recId = ECDSASignature(
-            leafList.first().bytesValue.toBigInteger(),
-            leafList.last().bytesValue.toBigInteger()
-        ).determineRecId(encodeRLPHash, publicKey!!)
+        val (leafList, recId) = sign(encodeRLPHash)
 
         val signatureData = SignatureData(
             r = BigInteger(leafList.first().bytesValue),
@@ -143,6 +129,36 @@ class KhartwareChannel(cardChannel: CardChannel) {
         )
 
         return SignedTransaction(tx, signatureData)
+    }
+
+    private fun sign(encodeRLPHash: ByteArray): Pair<MutableList<BerTlv>, Int> {
+        val signedTransaction = cmdSet.sign(encodeRLPHash).checkOK().data
+
+        val parsed = blvParser.parse(signedTransaction)
+
+        val rootList = parsed.list
+        if (rootList.size != 1 || rootList.first().tag != BerTag(0xa0)) {
+            throw IllegalArgumentException("Unexpected Signing result " + rootList)
+        }
+
+        val innerList = rootList.first().values
+
+        if (innerList.size != 2 || innerList.last().tag != BerTag(0x30)) {
+            throw IllegalArgumentException("Unexpected Signing result (level 2) " + innerList.size + " " + innerList.last().tag)
+        }
+
+        val leafList = innerList.last().values
+
+
+        if (leafList.size != 2 || leafList.first().tag != BerTag(0x02) || leafList.last().tag != BerTag(0x02)) {
+            throw IllegalArgumentException("Unexpected Signing result (leaf) $leafList")
+        }
+
+        val recId = ECDSASignature(
+            leafList.first().bytesValue.toBigInteger(),
+            leafList.last().bytesValue.toBigInteger()
+        ).determineRecId(encodeRLPHash, publicKey!!)
+        return Pair(leafList, recId)
     }
 
 }
