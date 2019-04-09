@@ -22,6 +22,13 @@
                     android:id="@+id/mode_radio_check_status"
                     android:text="Status"
             />
+
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mode_radio_set_ndef"
+                    android:text="set ndef"
+            />
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

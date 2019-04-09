@@ -1,6 +1,8 @@
 package org.walleth.khartwarewallet.demo
 
 import android.graphics.drawable.BitmapDrawable
+import android.nfc.NdefMessage
+import android.nfc.NdefRecord
 import android.nfc.NfcAdapter.getDefaultAdapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -27,9 +29,6 @@ import java.io.StringWriter
 import java.math.BigInteger.ZERO
 import java.math.BigInteger.valueOf
 import java.security.Security
-
-
-const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,17 +58,33 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 if (!channel.cardInfo.isInitializedCard) {
-                    currentInfoText = "Card detected but not initialized"
+                    currentInfoText = "Card detected but not initialized .."
+                    val res = channel.init("000000","123456789012","foo")
+
+                    currentInfoText += ".. done $res"
                 } else {
                     currentInfoText = "Card detected with version" + channel.cardInfo.appVersionString
 
-                    channel.autoPair("KeycardTest")
+                    channel.autoPair("foo")
                     currentInfoText += "\nCard paired"
 
                     channel.autoOpenSecureChannel()
                     currentInfoText += "\nSecure channel established"
 
                     when (mode_radio_group.checkedRadioButtonId) {
+                        R.id.mode_radio_set_ndef -> {
+
+                            val status = channel.getStatus().toString()
+
+                            currentInfoText += "\nCard status $status"
+
+                            channel.verifyPIN("000000")
+
+                            val ndef = NdefMessage(NdefRecord.createApplicationRecord("org.walleth")).toByteArray()
+                            val res = channel.ndef(ndef)
+
+                            currentInfoText += "\nNDEF isOK:${res.isOK}"
+                        }
                         R.id.mode_radio_check_status -> {
 
                             val status = channel.getStatus().toString()
@@ -160,7 +175,6 @@ class MainActivity : AppCompatActivity() {
 
                         }
                     }
-
 
                     channel.unpairOthers()
                     channel.autoUnpair()

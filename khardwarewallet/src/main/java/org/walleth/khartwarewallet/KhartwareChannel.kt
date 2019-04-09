@@ -91,6 +91,13 @@ class KhartwareChannel(cardChannel: CardChannel) {
         cmdSet.removeKey()
     }
 
+    fun init(pin: String, puk: String, pwd: String) =
+        cmdSet.init(pin, puk, pwd)
+
+    fun ndef(ndef: ByteArray) =
+        cmdSet.setNDEF(ndef)
+
+
     fun verifyPIN(pin: String) {
         cmdSet.verifyPIN(pin).checkOK()
     }
