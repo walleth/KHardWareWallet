@@ -59,16 +59,16 @@ class MainActivity : AppCompatActivity() {
             try {
                 if (!channel.cardInfo.isInitializedCard) {
                     currentInfoText = "Card detected but not initialized .."
-                    val res = channel.init("000000","123456789012","foo")
+                    val res = channel.commandSet.init("000000","123456789012","foo")
 
                     currentInfoText += ".. done $res"
                 } else {
                     currentInfoText = "Card detected with version" + channel.cardInfo.appVersionString
 
-                    channel.autoPair("foo")
+                    channel.commandSet.autoPair("foo")
                     currentInfoText += "\nCard paired"
 
-                    channel.autoOpenSecureChannel()
+                    channel.commandSet.autoOpenSecureChannel()
                     currentInfoText += "\nSecure channel established"
 
                     when (mode_radio_group.checkedRadioButtonId) {
@@ -78,10 +78,10 @@ class MainActivity : AppCompatActivity() {
 
                             currentInfoText += "\nCard status $status"
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
 
                             val ndef = NdefMessage(NdefRecord.createApplicationRecord("org.walleth")).toByteArray()
-                            val res = channel.ndef(ndef)
+                            val res = channel.commandSet.setNDEF(ndef)
 
                             currentInfoText += "\nNDEF isOK:${res.isOK}"
                         }
@@ -91,10 +91,10 @@ class MainActivity : AppCompatActivity() {
 
                             currentInfoText += "\nCard status $status"
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
                         }
                         R.id.mode_radio_show_qr_code -> {
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
 
                             val address = channel.toPublicKey().toAddress()
 
@@ -112,31 +112,31 @@ class MainActivity : AppCompatActivity() {
 
                             currentInfoText += "\nGenerated Mnemonic $mnemonic"
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
                         }
 
 
                         R.id.mode_radio_new_key -> {
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
 
-                            channel.initWithNewKey()
+                            channel.commandSet.generateKey()
 
-                            currentInfoText += "\nNew Key uploaded"
+                            currentInfoText += "\nNew Key generated"
                         }
 
                         R.id.mode_radio_remove_key -> {
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
 
-                            channel.removeKey()
+                            channel.commandSet.removeKey()
 
                             currentInfoText += "\nKey removed"
 
                         }
 
                         R.id.mode_radio_sign_text -> {
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
                             val address = channel.toPublicKey().toAddress()
 
                             val message = "foo"
@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         R.id.mode_radio_create_transaction -> {
 
-                            channel.verifyPIN("000000")
+                            channel.commandSet.verifyPIN("000000")
 
                             val address = channel.toPublicKey().toAddress()
 
@@ -176,8 +176,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-                    channel.unpairOthers()
-                    channel.autoUnpair()
+                    channel.commandSet.unpairOthers()
+                    channel.commandSet.autoUnpair()
                 }
             } catch (e: Exception) {
                 val sw = StringWriter()

@@ -10,7 +10,6 @@ import im.status.keycard.applet.KeycardCommandSet.GET_STATUS_P1_APPLICATION
 import im.status.keycard.applet.TinyBERTLV
 import im.status.keycard.io.CardChannel
 import org.kethereum.bip39.model.MnemonicWords
-import org.kethereum.crypto.SecureRandomUtils.secureRandom
 import org.kethereum.crypto.api.ec.ECDSASignature
 import org.kethereum.crypto.determineRecId
 import org.kethereum.extensions.toBigInteger
@@ -22,19 +21,16 @@ import org.kethereum.model.SignedTransaction
 import org.kethereum.model.Transaction
 import org.walleth.khex.toHexString
 import java.math.BigInteger
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.spec.ECGenParameterSpec
 
 
-class KhartwareChannel(cardChannel: CardChannel) {
+class KHardwareChannel(cardChannel: CardChannel) {
 
-    private var cmdSet = KeycardCommandSet(cardChannel)
+    var commandSet = KeycardCommandSet(cardChannel)
     private val blvParser by lazy { BerTlvParser() }
 
     val cardInfo: ApplicationInfo by lazy {
 
-        val data = cmdSet.select().checkOK().data
+        val data = commandSet.select().checkOK().data
 
         ApplicationInfo(data)
     }
@@ -48,12 +44,8 @@ class KhartwareChannel(cardChannel: CardChannel) {
         return PublicKey(copyOfRange(1, size))
     }
 
-    fun autoPair(password: String) = cmdSet.autoPair(password)
-
-    fun autoOpenSecureChannel() = cmdSet.autoOpenSecureChannel()
-
     fun generateMnemonic(checksumLength: Int, wordList: List<String>) =
-        cmdSet.generateMnemonic(checksumLength).checkOK().data.let { responseList ->
+        commandSet.generateMnemonic(checksumLength).checkOK().data.let { responseList ->
 
             if (wordList.size != 2048) {
                 throw java.lang.IllegalArgumentException("Wordlist must have a size of 2048 - but was" + wordList.size)
@@ -71,7 +63,7 @@ class KhartwareChannel(cardChannel: CardChannel) {
         }
 
     fun getStatus(): KhartwareStatus {
-        val bytes = cmdSet.getStatus(GET_STATUS_P1_APPLICATION).checkOK().data
+        val bytes = commandSet.getStatus(GET_STATUS_P1_APPLICATION).checkOK().data
 
         val tinyBERTLV = TinyBERTLV(bytes)
         tinyBERTLV.enterConstructed(TLV_APPLICATION_STATUS_TEMPLATE.toInt())
@@ -83,31 +75,9 @@ class KhartwareChannel(cardChannel: CardChannel) {
         )
     }
 
-    fun initWithNewKey() {
-        cmdSet.loadKey(createSecp256k1KeyPair()).checkOK()
-    }
-
-    fun removeKey() {
-        cmdSet.removeKey()
-    }
-
-    fun init(pin: String, puk: String, pwd: String) =
-        cmdSet.init(pin, puk, pwd)
-
-    fun ndef(ndef: ByteArray) =
-        cmdSet.setNDEF(ndef)
-
-
-    fun verifyPIN(pin: String) {
-        cmdSet.verifyPIN(pin).checkOK()
-    }
-
-    fun unpairOthers() = cmdSet.unpairOthers()
-    fun autoUnpair() = cmdSet.autoUnpair()
-
     private var publicKey: PublicKey? = null
 
-    fun toPublicKey() = cmdSet.exportCurrentKey(true).checkOK().data.let {
+    fun toPublicKey() = commandSet.exportCurrentKey(true).checkOK().data.let {
         val parsed = blvParser.parse(it)
         publicKey = parsed.list.first().values.first().bytesValue.toPublicKey()
         publicKey!!
@@ -139,7 +109,7 @@ class KhartwareChannel(cardChannel: CardChannel) {
     }
 
     private fun sign(encodeRLPHash: ByteArray): Pair<MutableList<BerTlv>, Int> {
-        val signedTransaction = cmdSet.sign(encodeRLPHash).checkOK().data
+        val signedTransaction = commandSet.sign(encodeRLPHash).checkOK().data
 
         val parsed = blvParser.parse(signedTransaction)
 
@@ -172,11 +142,3 @@ class KhartwareChannel(cardChannel: CardChannel) {
 
 // TODO replace with native uint when migrating to Kotlin 1.3
 fun Byte.toPositiveInt() = toInt() and 0xFF
-
-internal fun createSecp256k1KeyPair(): KeyPair {
-
-    val keyPairGenerator = KeyPairGenerator.getInstance("ECDSA")
-    val ecGenParameterSpec = ECGenParameterSpec("secp256k1")
-    keyPairGenerator.initialize(ecGenParameterSpec, secureRandom())
-    return keyPairGenerator.generateKeyPair()
-}

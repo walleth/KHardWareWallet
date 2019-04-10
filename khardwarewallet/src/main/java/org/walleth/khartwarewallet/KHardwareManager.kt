@@ -19,7 +19,7 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
     private var isoDep: IsoDep? = null
     private var isInvokingListener: Boolean = false
 
-    var onCardConnectedListener: ((channel: KhartwareChannel) -> Unit)? = null
+    var onCardConnectedListener: ((channel: KHardwareChannel) -> Unit)? = null
 
     fun isConnected() = isoDep != null && isoDep!!.isConnected
 
@@ -64,7 +64,7 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
         isInvokingListener = true
 
         try {
-            val channel = KhartwareChannel(NFCCardChannel(isoDep))
+            val channel = KHardwareChannel(NFCCardChannel(isoDep))
 
             if (channel.cardInfo.isInitializedCard && (!(channel.cardInfo.appVersionString == "2.1" || channel.cardInfo.appVersionString == "2.2"))) {
                 throw(IllegalStateException("Card version not supported. is:" + channel.cardInfo.appVersionString + " expected: 2.1 or 2.2"))
