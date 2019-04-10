@@ -9,6 +9,8 @@ import im.status.keycard.applet.KeycardCommandSet
 import im.status.keycard.applet.KeycardCommandSet.GET_STATUS_P1_APPLICATION
 import im.status.keycard.applet.TinyBERTLV
 import im.status.keycard.io.CardChannel
+import okio.buffer
+import okio.source
 import org.kethereum.bip39.model.MnemonicWords
 import org.kethereum.crypto.api.ec.ECDSASignature
 import org.kethereum.crypto.determineRecId
@@ -45,21 +47,23 @@ class KHardwareChannel(cardChannel: CardChannel) {
     }
 
     fun generateMnemonic(checksumLength: Int, wordList: List<String>) =
-        commandSet.generateMnemonic(checksumLength).checkOK().data.let { responseList ->
+        commandSet.generateMnemonic(checksumLength).checkOK().data.let { data ->
 
             if (wordList.size != 2048) {
                 throw java.lang.IllegalArgumentException("Wordlist must have a size of 2048 - but was" + wordList.size)
             }
 
-            if (responseList.size != 24) {
-                throw java.lang.IllegalStateException("Expected the result data to be 24 bytes but was ${responseList.size}")
+            if (data.size != 24) {
+                throw java.lang.IllegalStateException("Expected the result data to be 24 bytes but was ${data.size}")
             }
 
-            val indexList = (0..11).map {
-                responseList[it * 2].toPositiveInt().shl(8) or responseList[it * 2 + 1].toPositiveInt()
+            val buffer = data.inputStream().source().buffer()
+
+            val mnemonicWords =  (0..11).map {
+                wordList[buffer.readShort().toInt()]
             }
 
-            MnemonicWords(indexList.map { wordList[it] })
+            MnemonicWords(mnemonicWords)
         }
 
     fun getStatus(): KhartwareStatus {
@@ -139,6 +143,3 @@ class KHardwareChannel(cardChannel: CardChannel) {
     }
 
 }
-
-// TODO replace with native uint when migrating to Kotlin 1.3
-fun Byte.toPositiveInt() = toInt() and 0xFF

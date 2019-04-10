@@ -36,6 +36,8 @@ dependencies {
     api "com.github.walleth.kethereum:crypto_impl_bouncycastle:$kethereum_version"
     api "com.github.walleth.kethereum:bip39:$kethereum_version"
 
+    implementation 'com.squareup.okio:okio:2.2.2'
+
     implementation 'com.payneteasy:ber-tlv:1.0-9'
 
 }
