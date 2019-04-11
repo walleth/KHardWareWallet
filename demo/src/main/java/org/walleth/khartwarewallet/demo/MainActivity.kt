@@ -57,13 +57,13 @@ class MainActivity : AppCompatActivity() {
         cardManager.onCardConnectedListener = { channel ->
 
             try {
-                if (!channel.cardInfo.isInitializedCard) {
+                if (!channel.getCardInfo().isInitializedCard) {
                     currentInfoText = "Card detected but not initialized .."
                     val res = channel.commandSet.init("000000","123456789012","foo")
 
                     currentInfoText += ".. done $res"
                 } else {
-                    currentInfoText = "Card detected with version" + channel.cardInfo.appVersionString
+                    currentInfoText = "Card detected with version" + channel.getCardInfo().appVersionString
 
                     channel.commandSet.autoPair("foo")
                     currentInfoText += "\nCard paired"

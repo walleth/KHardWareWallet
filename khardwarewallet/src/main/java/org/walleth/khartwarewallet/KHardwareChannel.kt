@@ -30,12 +30,7 @@ class KHardwareChannel(cardChannel: CardChannel) {
     var commandSet = KeycardCommandSet(cardChannel)
     private val blvParser by lazy { BerTlvParser() }
 
-    val cardInfo: ApplicationInfo by lazy {
-
-        val data = commandSet.select().checkOK().data
-
-        ApplicationInfo(data)
-    }
+    fun getCardInfo() = ApplicationInfo(commandSet.select().checkOK().data)
 
     private fun ByteArray.toPublicKey(): PublicKey {
 
