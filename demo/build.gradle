@@ -41,6 +41,8 @@ dependencies {
 
     implementation 'com.github.kenglxn.QRGen:android:2.5.0'
 
+    implementation 'com.github.ligi:ExtraCompats:0.5'
+
     implementation project(':khardwarewallet')
 
     implementation 'com.android.support:multidex:1.0.3'

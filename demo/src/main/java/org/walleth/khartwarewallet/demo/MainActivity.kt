@@ -6,7 +6,6 @@ import android.nfc.NdefRecord
 import android.nfc.NfcAdapter.getDefaultAdapter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +20,7 @@ import org.kethereum.crypto.toAddress
 import org.kethereum.functions.encodeRLP
 import org.kethereum.model.Address
 import org.kethereum.model.Transaction
+import org.ligi.compat.HtmlCompat.fromHtml
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
 import org.walleth.khex.toHexString
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         set(value) {
             field = value
             runOnUiThread {
-                info_text.text = Html.fromHtml(field)
+                info_text.text = fromHtml(field)
                 info_text.movementMethod = LinkMovementMethod()
             }
         }
