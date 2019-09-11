@@ -24,7 +24,6 @@ import org.kethereum.model.Transaction
 import org.walleth.khex.toHexString
 import java.math.BigInteger
 
-
 class KHardwareChannel(cardChannel: CardChannel) {
 
     var commandSet = KeycardCommandSet(cardChannel)
@@ -76,7 +75,7 @@ class KHardwareChannel(cardChannel: CardChannel) {
 
     private var publicKey: PublicKey? = null
 
-    fun toPublicKey() = commandSet.exportCurrentKey(true).checkOK().data.let {
+    fun toPublicKey(): PublicKey = commandSet.exportCurrentKey(true).checkOK().data.let {
         val parsed = blvParser.parse(it)
         publicKey = parsed.list.first().values.first().bytesValue.toPublicKey()
         publicKey!!
@@ -88,20 +87,20 @@ class KHardwareChannel(cardChannel: CardChannel) {
         return SignatureData(
             r = BigInteger(leafList.first().bytesValue),
             s = BigInteger(leafList.last().bytesValue),
-            v = (recId + 27).toByte()
+            v = recId.toBigInteger() + BigInteger.valueOf(27)
         )
     }
 
     fun sign(tx: Transaction): SignedTransaction {
         val chainId = tx.chain!!
-        val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId.toByte() }).keccak()
+        val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId }).keccak()
 
         val (leafList, recId) = sign(encodeRLPHash)
 
         val signatureData = SignatureData(
             r = BigInteger(leafList.first().bytesValue),
             s = BigInteger(leafList.last().bytesValue),
-            v = (recId + chainId * 2 + 8 + 27).toByte()
+            v = (recId.toBigInteger() + chainId * BigInteger.valueOf(2) + BigInteger.valueOf(8) + BigInteger.valueOf(27))
         )
 
         return SignedTransaction(tx, signatureData)

@@ -25,7 +25,9 @@ android {
     lintOptions {
         abortOnError false
     }
-
+    packagingOptions {
+        exclude 'META-INF/main.kotlin_module'
+    }
 }
 
 dependencies {
@@ -33,8 +35,20 @@ dependencies {
 
     api 'com.github.status-im.status-keycard-java:android:2.2.1'
 
-    api "com.github.walleth.kethereum:crypto_impl_bouncycastle:$kethereum_version"
-    api "com.github.walleth.kethereum:bip39:$kethereum_version"
+    implementation "com.github.komputing.kethereum:bip39:$kethereum_version"
+    implementation "com.github.komputing.kethereum:model:$kethereum_version"
+    implementation "com.github.komputing.kethereum:keccak_shortcut:$kethereum_version"
+    implementation "com.github.komputing.kethereum:functions:$kethereum_version"
+
+    implementation "com.github.komputing.kethereum:extensions:$kethereum_version"
+
+    implementation "com.github.komputing.kethereum:crypto:$kethereum_version"
+    implementation "com.github.komputing.kethereum:crypto_api:$kethereum_version"
+    implementation "com.github.komputing.kethereum:crypto_impl_bouncycastle:$kethereum_version"
+
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.62'
+
+    implementation "com.github.komputing:KHex:0.6"
 
     implementation 'com.squareup.okio:okio:2.2.2'
 

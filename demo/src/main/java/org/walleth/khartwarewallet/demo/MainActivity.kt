@@ -11,14 +11,12 @@ import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import net.glxn.qrgen.android.QRCode
-import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.kethereum.DEFAULT_GAS_LIMIT
 import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.kethereum.crypto.signedMessageToKey
 import org.kethereum.crypto.toAddress
 import org.kethereum.functions.encodeRLP
-import org.kethereum.model.Address
 import org.kethereum.model.Transaction
 import org.ligi.compat.HtmlCompat.fromHtml
 import org.walleth.khartwarewallet.KHardwareManager
@@ -28,7 +26,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger.ZERO
 import java.math.BigInteger.valueOf
-import java.security.Security
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,8 +47,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
-        Security.addProvider(BouncyCastleProvider())
         setContentView(R.layout.activity_main)
 
         cardManager.onCardConnectedListener = { channel ->
@@ -153,16 +148,16 @@ class MainActivity : AppCompatActivity() {
                             val address = channel.toPublicKey().toAddress()
 
                             val tx = Transaction(
-                                chain = 5L,
+                                chain = valueOf(5),
                                 creationEpochSecond = null,
                                 from = address,
                                 gasLimit = DEFAULT_GAS_LIMIT,
                                 gasPrice = DEFAULT_GAS_PRICE,
-                                input = emptyList(),
+                                input = ByteArray(0),
                                 nonce = ZERO,
-                                to = Address("0x381e247bef0ebc21b6611786c665dd5514dcc31f"),
+                                to = org.kethereum.model.Address("0x381e247bef0ebc21b6611786c665dd5514dcc31f"),
                                 txHash = null,
-                                value = valueOf(42L)
+                                value = valueOf(42)
                             )
 
                             val signedTx = channel.sign(tx)
