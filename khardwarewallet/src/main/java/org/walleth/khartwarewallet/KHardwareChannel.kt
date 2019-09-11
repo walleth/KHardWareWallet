@@ -33,8 +33,9 @@ class KHardwareChannel(cardChannel: CardChannel) {
 
     private fun ByteArray.toPublicKey(): PublicKey {
 
-        if (first() != 4.toByte()) { // compression signaling
-            throw java.lang.IllegalStateException("public key must start with 0x04 but was " + first() + " (full " + toHexString() + " size:$size )")
+        check(first() == 4.toByte()) {
+            // compression signaling
+            "public key must start with 0x04 but was " + first() + " (full " + toHexString() + " size:$size )"
         }
 
         return PublicKey(copyOfRange(1, size))
@@ -43,13 +44,9 @@ class KHardwareChannel(cardChannel: CardChannel) {
     fun generateMnemonic(checksumLength: Int, wordList: List<String>) =
         commandSet.generateMnemonic(checksumLength).checkOK().data.let { data ->
 
-            if (wordList.size != 2048) {
-                throw java.lang.IllegalArgumentException("Wordlist must have a size of 2048 - but was" + wordList.size)
-            }
+            require(wordList.size == 2048) { "Wordlist must have a size of 2048 - but was" + wordList.size }
 
-            if (data.size != 24) {
-                throw java.lang.IllegalStateException("Expected the result data to be 24 bytes but was ${data.size}")
-            }
+            check(data.size == 24) { "Expected the result data to be 24 bytes but was ${data.size}" }
 
             val buffer = data.inputStream().source().buffer()
 
@@ -120,16 +117,12 @@ class KHardwareChannel(cardChannel: CardChannel) {
 
         val innerList = rootList.first().values
 
-        if (innerList.size != 2 || innerList.last().tag != BerTag(0x30)) {
-            throw IllegalArgumentException("Unexpected Signing result (level 2) " + innerList.size + " " + innerList.last().tag)
-        }
+        require(!(innerList.size != 2 || innerList.last().tag != BerTag(0x30))) { "Unexpected Signing result (level 2) " + innerList.size + " " + innerList.last().tag }
 
         val leafList = innerList.last().values
 
 
-        if (leafList.size != 2 || leafList.first().tag != BerTag(0x02) || leafList.last().tag != BerTag(0x02)) {
-            throw IllegalArgumentException("Unexpected Signing result (leaf) $leafList")
-        }
+        require(!(leafList.size != 2 || leafList.first().tag != BerTag(0x02) || leafList.last().tag != BerTag(0x02))) { "Unexpected Signing result (leaf) $leafList" }
 
         val recId = ECDSASignature(
             leafList.first().bytesValue.toBigInteger(),
