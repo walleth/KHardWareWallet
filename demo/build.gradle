@@ -51,7 +51,7 @@ dependencies {
 
     implementation "com.github.komputing:KHex:0.6"
 
-    implementation 'com.github.kenglxn.QRGen:android:2.5.0'
+    implementation 'com.github.kenglxn.QRGen:android:2.6.0'
 
     implementation 'com.github.ligi:ExtraCompats:1.0'
 
