@@ -5,10 +5,10 @@ import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NfcAdapter.getDefaultAdapter
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import net.glxn.qrgen.android.QRCode
 import org.kethereum.DEFAULT_GAS_LIMIT
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
                             val address = channel.toPublicKey().toAddress()
 
                             val message = "foo"
-                            val signText = channel.signText(message)
+                            val signText = channel.signString(message)
 
                             val revoceredAddress=signedMessageToKey("foo".toByteArray(),signText).toAddress()
 
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                                 value = valueOf(42)
                             )
 
-                            val signedTx = channel.sign(tx)
+                            val signedTx = channel.signTransaction(tx)
                             val rlp = signedTx.encodeRLP().toHexString()
 
                             currentInfoText += "\n ${signedTx.signatureData} \n"

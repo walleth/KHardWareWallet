@@ -81,9 +81,9 @@ class KHardwareChannel(cardChannel: CardChannel) {
         publicKey!!
     }
 
-    fun signText(string: String): SignatureData {
+    fun signByteArray(byteArray: ByteArray): SignatureData {
 
-        val (leafList, recId) = sign(string.toByteArray().keccak())
+        val (leafList, recId) = sign(byteArray.keccak())
         return SignatureData(
             r = BigInteger(leafList.first().bytesValue),
             s = BigInteger(leafList.last().bytesValue),
@@ -91,7 +91,9 @@ class KHardwareChannel(cardChannel: CardChannel) {
         )
     }
 
-    fun sign(tx: Transaction): SignedTransaction {
+    fun signString(string: String) = signByteArray(string.toByteArray().keccak())
+
+    fun signTransaction(tx: Transaction): SignedTransaction {
         val chainId = tx.chain!!
         val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId }).keccak()
 
