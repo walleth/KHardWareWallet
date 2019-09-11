@@ -52,6 +52,6 @@ dependencies {
 
     implementation 'com.squareup.okio:okio:2.4.0'
 
-    implementation 'com.payneteasy:ber-tlv:1.0-9'
+    implementation 'com.payneteasy:ber-tlv:1.0-10'
 
 }
