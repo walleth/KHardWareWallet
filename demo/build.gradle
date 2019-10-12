@@ -33,6 +33,7 @@ android {
         exclude 'META-INF/main.kotlin_module'
         exclude 'META-INF/kotlinx-io.kotlin_module'
         exclude 'META-INF/atomicfu.kotlin_module'
+	exclude 'META-INF/khex.kotlin_module'
     }
 }
 
@@ -49,7 +50,7 @@ dependencies {
     implementation "com.github.komputing.kethereum:model:$kethereum_version"
     implementation "com.github.komputing.kethereum:functions:$kethereum_version"
 
-    implementation "com.github.komputing:KHex:0.6"
+    implementation "com.github.komputing:khex:0.6"
 
     implementation 'com.github.kenglxn.QRGen:android:2.6.0'
 
