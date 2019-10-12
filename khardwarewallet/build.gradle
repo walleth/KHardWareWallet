@@ -48,7 +48,7 @@ dependencies {
 
     implementation 'org.bouncycastle:bcprov-jdk15on:1.64'
 
-    implementation "com.github.komputing:KHex:0.6"
+    implementation "com.github.komputing:khex:0.6"
 
     implementation 'com.squareup.okio:okio:2.4.0'
 
