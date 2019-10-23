@@ -111,9 +111,7 @@ class KHardwareChannel(cardChannel: CardChannel) {
         val parsed = blvParser.parse(signedTransaction)
 
         val rootList = parsed.list
-        if (rootList.size != 1 || rootList.first().tag != BerTag(0xa0)) {
-            throw IllegalArgumentException("Unexpected Signing result " + rootList)
-        }
+        require(!(rootList.size != 1 || rootList.first().tag != BerTag(0xa0))) { "Unexpected Signing result $rootList" }
 
         val innerList = rootList.first().values
 
