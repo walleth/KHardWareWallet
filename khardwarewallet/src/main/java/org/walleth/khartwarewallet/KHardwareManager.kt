@@ -12,8 +12,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.IOException
 import java.security.Security
 
-private const val TAG = "CardManager"
-
 class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
 
     private var isoDep: IsoDep? = null
@@ -65,11 +63,6 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
 
         try {
             val channel = KHardwareChannel(NFCCardChannel(isoDep))
-
-            val cardInfo = channel.getCardInfo()
-            if (cardInfo.isInitializedCard && (!(cardInfo.appVersionString == "2.1" || cardInfo.appVersionString == "2.2"))) {
-                throw(IllegalStateException("Card version not supported. is:" + cardInfo.appVersionString + " expected: 2.1 or 2.2"))
-            }
             onCardConnectedListener?.invoke(channel)
 
         } catch (ioe: IOException) {
