@@ -5,14 +5,17 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.TagLostException
 import android.nfc.tech.IsoDep
-import android.os.SystemClock
 import android.util.Log
 import im.status.keycard.android.NFCCardChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.IOException
 import java.security.Security
 
-class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
+class KHardwareManager : NfcAdapter.ReaderCallback {
 
     private var isoDep: IsoDep? = null
     private var isInvokingListener: Boolean = false
@@ -38,7 +41,13 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
 
     }
 
-    override fun run() {
+    fun start() {
+        GlobalScope.launch(Dispatchers.IO) {
+            startSuspended()
+        }
+    }
+
+    private suspend fun startSuspended() {
         var connected = isConnected()
 
         while (true) {
@@ -54,7 +63,7 @@ class KHardwareManager : Thread(), NfcAdapter.ReaderCallback {
                 }
             }
 
-            SystemClock.sleep(50)
+            delay(50)
         }
     }
 

@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         cardManager.start()
+
     }
 
 
