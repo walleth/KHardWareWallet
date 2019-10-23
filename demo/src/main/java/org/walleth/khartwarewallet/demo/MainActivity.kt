@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import net.glxn.qrgen.android.QRCode
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.kethereum.DEFAULT_GAS_LIMIT
 import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
@@ -26,6 +27,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger.ZERO
 import java.math.BigInteger.valueOf
+import java.security.Security
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
+        Security.addProvider(BouncyCastleProvider())
 
         setContentView(R.layout.activity_main)
 
