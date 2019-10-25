@@ -7,10 +7,7 @@ import android.nfc.TagLostException
 import android.nfc.tech.IsoDep
 import android.util.Log
 import im.status.keycard.android.NFCCardChannel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.IOException
 import java.security.Security
@@ -41,29 +38,24 @@ class KHardwareManager : NfcAdapter.ReaderCallback {
 
     }
 
-    fun start() {
-        GlobalScope.launch(Dispatchers.IO) {
-            startSuspended()
-        }
-    }
+    fun start(scope: CoroutineScope = GlobalScope) {
+        scope.launch(Dispatchers.IO) {
+            var connected = isConnected()
+            while (scope.isActive) {
+                val newConnected = isConnected()
+                if (newConnected != connected) {
+                    connected = newConnected
+                    Log.i(TAG, "tag " + if (connected) "connected" else "disconnected")
 
-    private suspend fun startSuspended() {
-        var connected = isConnected()
-
-        while (true) {
-            val newConnected = isConnected()
-            if (newConnected != connected) {
-                connected = newConnected
-                Log.i(TAG, "tag " + if (connected) "connected" else "disconnected")
-
-                if (connected && !isInvokingListener) {
-                    onCardConnected()
-                } else {
-                    onCardDisconnected()
+                    if (connected && !isInvokingListener) {
+                        onCardConnected()
+                    } else {
+                        onCardDisconnected()
+                    }
                 }
-            }
 
-            delay(50)
+                delay(50)
+            }
         }
     }
 
