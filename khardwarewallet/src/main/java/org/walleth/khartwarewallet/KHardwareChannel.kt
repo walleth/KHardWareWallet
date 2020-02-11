@@ -15,13 +15,13 @@ import org.kethereum.bip39.model.MnemonicWords
 import org.kethereum.crypto.api.ec.ECDSASignature
 import org.kethereum.crypto.determineRecId
 import org.kethereum.extensions.toBigInteger
-import org.kethereum.functions.encodeRLP
+import org.kethereum.extensions.transactions.encodeRLP
 import org.kethereum.keccakshortcut.keccak
 import org.kethereum.model.PublicKey
 import org.kethereum.model.SignatureData
 import org.kethereum.model.SignedTransaction
 import org.kethereum.model.Transaction
-import org.walleth.khex.toHexString
+import org.komputing.khex.extensions.toHexString
 import java.math.BigInteger
 
 class KHardwareChannel(cardChannel: CardChannel) {

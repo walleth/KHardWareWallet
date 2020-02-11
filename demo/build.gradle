@@ -48,7 +48,7 @@ dependencies {
 
     implementation "com.github.komputing.kethereum:crypto:$kethereum_version"
     implementation "com.github.komputing.kethereum:model:$kethereum_version"
-    implementation "com.github.komputing.kethereum:functions:$kethereum_version"
+    implementation "com.github.komputing.kethereum:extensions_transactions:$kethereum_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 

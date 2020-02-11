@@ -17,12 +17,12 @@ import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.kethereum.crypto.signedMessageToKey
 import org.kethereum.crypto.toAddress
-import org.kethereum.functions.encodeRLP
+import org.kethereum.extensions.transactions.encodeRLP
 import org.kethereum.model.Transaction
+import org.komputing.khex.extensions.toHexString
 import org.ligi.compat.HtmlCompat.fromHtml
 import org.walleth.khartwarewallet.KHardwareManager
 import org.walleth.khartwarewallet.enableKhardwareReader
-import org.walleth.khex.toHexString
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger.ZERO

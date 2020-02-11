@@ -40,9 +40,9 @@ dependencies {
     implementation "com.github.komputing.kethereum:bip39:$kethereum_version"
     implementation "com.github.komputing.kethereum:model:$kethereum_version"
     implementation "com.github.komputing.kethereum:keccak_shortcut:$kethereum_version"
-    implementation "com.github.komputing.kethereum:functions:$kethereum_version"
 
-    implementation "com.github.komputing.kethereum:extensions:$kethereum_version"
+    implementation "com.github.komputing.kethereum:extensions_kotlin:$kethereum_version"
+    implementation "com.github.komputing.kethereum:extensions_transactions:$kethereum_version"
 
     implementation "com.github.komputing.kethereum:crypto:$kethereum_version"
     implementation "com.github.komputing.kethereum:crypto_api:$kethereum_version"
