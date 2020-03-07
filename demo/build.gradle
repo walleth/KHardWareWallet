@@ -58,7 +58,7 @@ dependencies {
 
     implementation 'com.github.ligi:ExtraCompats:1.0'
 
-    implementation project(':khardwarewallet')
+    implementation project(':keycard')
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
