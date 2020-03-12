@@ -1,3 +1,5 @@
-include ':keycard'
 include ':demo'
-
+include ':demo_trezor'
+include ':keycard'
+include ':trezor'
+include ':trezor_wire'

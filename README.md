@@ -1,6 +1,6 @@
 # What?
 
-Kotlin Android library to for the [status.im light hardware wallet](https://hardwallet.status.im) (a java card)
+Kotlin Android library to for the [status.im light hardware wallet](https://hardwallet.status.im) (a java card) and the [TREZOR](https://trezor.io) hardware wallet
 
 # Where?
 
@@ -9,6 +9,8 @@ get it via jitpack:
 [![Release](https://jitpack.io/v/walleth/KHardWareWallet.svg)](https://jitpack.io/#walleth/KHardWareWallet)
 
 # Why?
+
+## KeyCard
 
 The workshop about the [status-im hardware wallet](https://hardwallet.status.im) at the first day of [cryptolife](https://hackathon.status.im) inspired me to add support for it to  [WallETH](https://walleth.org) (the Android Ethereum wallet I maintain)
 
@@ -21,6 +23,9 @@ A lot of great use-cases for this came to my mind and inspired me to do the inte
  - great option for key-backups (writing down mnemonics which is the most commonly done thing currently for backups has the drawback that it often exposes the key) This way you can just buy a card and even give it to someone untrusted to keep for you.
  - ..
 
+## TREZOR
+
+The TREZOR is a great hardware wallet that is fully libre (hardware and software). In contrast to the official android library this library here uses [wire](https://github.com/square/wire) which has a smaller footprint (read more about it [here](https://github.com/square/wire#why-wire))
 
 # How?
 
@@ -28,12 +33,18 @@ It is build on top of [hardwallet-lite-android](https://github.com/status-im/har
 
 # Links
 
-  * https://devpost.com/software/khardwarewallet
+## KeyCard
+
+ * https://devpost.com/software/khardwarewallet
  * https://github.com/status-im/hardwallet-lite-android/pull/1
  * https://peepeth.com/ligi/peeps/QmavQqt4CtE5xtu8G9yBRnsXzo3KSWisFGKdTG145WMWrT
  * https://github.com/walleth/walleth/pull/295
  * https://github.com/status-im/smartcard-cap-installer-test/pull/5
  * https://hardwallet.status.im
+
+## TREZOR
+
+ * https://github.com/trezor/trezor-android
 
 # License
 

@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: "com.github.dcendents.android-maven"
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 4
+        versionName "0.4"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    task androidSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.source
+        classifier = 'sources'
+    }
+
+    artifacts {
+        archives androidSourcesJar
+    }
+
+
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/main.kotlin_module'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    api 'com.github.status-im.status-keycard-java:android:3.0.1'
+
+    implementation "com.github.komputing.kethereum:bip39:$kethereum_version"
+    implementation "com.github.komputing.kethereum:model:$kethereum_version"
+    implementation "com.github.komputing.kethereum:keccak_shortcut:$kethereum_version"
+
+    implementation "com.github.komputing.kethereum:extensions_kotlin:$kethereum_version"
+    implementation "com.github.komputing.kethereum:extensions_transactions:$kethereum_version"
+
+    implementation "com.github.komputing.kethereum:crypto:$kethereum_version"
+    implementation "com.github.komputing.kethereum:crypto_api:$kethereum_version"
+    implementation "com.github.komputing.kethereum:crypto_impl_bouncycastle:$kethereum_version"
+
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.64'
+
+    implementation "com.github.komputing:khex:0.6"
+
+    implementation 'com.squareup.okio:okio:2.4.0'
+
+    implementation 'com.payneteasy:ber-tlv:1.0-10'
+
+}
