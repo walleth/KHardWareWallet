@@ -18,7 +18,10 @@ import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.kethereum.crypto.signedMessageToKey
 import org.kethereum.crypto.toAddress
 import org.kethereum.extensions.transactions.encodeRLP
+import org.kethereum.model.Address
+import org.kethereum.model.ChainId
 import org.kethereum.model.Transaction
+import org.kethereum.model.createTransactionWithDefaults
 import org.komputing.khex.extensions.toHexString
 import org.ligi.compat.HtmlCompat.fromHtml
 import org.walleth.khartwarewallet.KHardwareManager
@@ -152,16 +155,11 @@ class MainActivity : AppCompatActivity() {
 
                             val address = channel.toPublicKey().toAddress()
 
-                            val tx = Transaction(
-                                chain = valueOf(5),
-                                creationEpochSecond = null,
+                            val tx = createTransactionWithDefaults(
+                                chain = ChainId(5L),
                                 from = address,
-                                gasLimit = DEFAULT_GAS_LIMIT,
-                                gasPrice = DEFAULT_GAS_PRICE,
-                                input = ByteArray(0),
                                 nonce = ZERO,
-                                to = org.kethereum.model.Address("0x381e247bef0ebc21b6611786c665dd5514dcc31f"),
-                                txHash = null,
+                                to = Address("0x381e247bef0ebc21b6611786c665dd5514dcc31f"),
                                 value = valueOf(42)
                             )
 
