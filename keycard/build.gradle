@@ -35,7 +35,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    api 'com.github.status-im.status-keycard-java:android:3.0.1'
+    api 'com.github.status-im.status-keycard-java:android:3.0.4'
 
     implementation "com.github.komputing.kethereum:bip39:$kethereum_version"
     implementation "com.github.komputing.kethereum:model:$kethereum_version"
