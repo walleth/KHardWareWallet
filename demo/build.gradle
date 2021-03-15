@@ -62,7 +62,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.65'
+    implementation "org.bouncycastle:bcprov-jdk15to18:$bc_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

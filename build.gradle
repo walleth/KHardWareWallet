@@ -4,6 +4,7 @@ buildscript {
         kethereum_version = '0.81.6'
         coroutines_version = '1.4.2'
         wire_version = '3.6.1'
+	bc_version = '1.68'
     }
 
     repositories {
