@@ -3,5 +3,5 @@ apply plugin: "com.squareup.wire"
 apply plugin: "com.github.dcendents.android-maven"
 
 dependencies {
-    api 'com.squareup.wire:wire-runtime:3.1.0'
+    api "com.squareup.wire:wire-runtime:$wire_version"
 }

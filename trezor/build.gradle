@@ -33,7 +33,7 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    api 'com.squareup.wire:wire-runtime:3.1.0'
+    api "com.squareup.wire:wire-runtime:$wire_version"
 
     testImplementation "com.github.komputing:khex:0.6"
     testImplementation 'junit:junit:4.12'
