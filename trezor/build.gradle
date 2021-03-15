@@ -35,7 +35,7 @@ dependencies {
 
     api "com.squareup.wire:wire-runtime:$wire_version"
 
-    testImplementation "com.github.komputing:khex:0.6"
+    testImplementation "com.github.komputing:khex:$khex_version"
     testImplementation 'junit:junit:4.12'
     testImplementation "com.google.truth:truth:1.1.2"
 

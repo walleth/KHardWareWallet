@@ -52,7 +52,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    implementation "com.github.komputing:khex:0.6"
+    implementation "com.github.komputing:khex:$khex_version"
 
     implementation 'com.github.kenglxn.QRGen:android:2.6.0'
 

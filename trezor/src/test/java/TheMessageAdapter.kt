@@ -7,10 +7,11 @@ import io.trezor.deviceprotocol.MessageType
 import okio.ByteString
 import org.junit.Assert.fail
 import org.junit.Test
+import org.komputing.khex.extensions.hexToByteArray
+import org.komputing.khex.model.HexString
 import org.walleth.khartwarewallet.trezor.messages.getMessageId
 import org.walleth.khartwarewallet.trezor.messages.parseMessageWithType
 import org.walleth.khartwarewallet.trezor.messages.withFrameAsBuffer
-import org.walleth.khex.hexToByteArray
 
 class TheMessageAdapter {
     @Test
@@ -31,7 +32,7 @@ class TheMessageAdapter {
 
     @Test
     fun foo() {
-        val payload = "0x122a307842346332304539663039463965364262636133386139313861303441454532423337376531313333".hexToByteArray()
+        val payload = HexString("0x122a307842346332304539663039463965364262636133386139313861303441454532423337376531313333").hexToByteArray()
 
         val res = EthereumAddress.ADAPTER.decode(payload)
 

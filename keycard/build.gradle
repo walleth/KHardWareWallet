@@ -50,7 +50,7 @@ dependencies {
 
     implementation "org.bouncycastle:bcprov-jdk15to18:$bc_version"
 
-    implementation "com.github.komputing:khex:0.6"
+    implementation "com.github.komputing:khex:$khex_version"
 
     implementation 'com.squareup.okio:okio:2.4.0'
 
