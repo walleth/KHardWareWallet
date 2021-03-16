@@ -11,12 +11,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.2'
         classpath "com.squareup.wire:wire-gradle-plugin:$wire_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.28.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.38.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
