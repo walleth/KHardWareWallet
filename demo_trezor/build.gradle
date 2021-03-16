@@ -6,11 +6,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "com.github.dcendents.android-maven"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "org.walleth.khartwarewallet.demo.trezor"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 2
         versionName "0.2"
         multiDexEnabled true
