@@ -43,6 +43,5 @@ dependencies {
     implementation project(':trezor')
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
-
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 }

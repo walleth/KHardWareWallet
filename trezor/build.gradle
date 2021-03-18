@@ -27,7 +27,7 @@ android {
 
 dependencies {
     api project(":trezor_wire")
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
