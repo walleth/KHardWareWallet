@@ -6,6 +6,7 @@ buildscript {
         wire_version = '3.6.1'
 	bc_version = '1.68'
         khex_version = '1.1.0'
+        appcompat_version = '1.2.0'
     }
 
     repositories {
