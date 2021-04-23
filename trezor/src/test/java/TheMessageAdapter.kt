@@ -40,7 +40,7 @@ class TheMessageAdapter {
     @Test
     fun canDecodeMessageId() {
         val message = EthereumSignMessage.Builder().message(ByteString.EMPTY).build()
-        assertThat(getMessageId(message)).isEqualTo(108)
+        assertThat(getMessageId(message)).isEqualTo(64)
     }
 
     @Test

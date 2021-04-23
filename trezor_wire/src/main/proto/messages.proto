@@ -42,9 +42,9 @@ enum MessageType {
     MessageType_EthereumSignTx = 58 [(wire_in) = true];
     MessageType_EthereumTxRequest = 59 [(wire_out) = true];
     MessageType_EthereumTxAck = 60 [(wire_in) = true];
-    MessageType_EthereumSignMessage = 108 [(wire_in) = true];
-    MessageType_EthereumVerifyMessage = 109 [(wire_in) = true];
-    MessageType_EthereumMessageSignature = 110 [(wire_out) = true];
+    MessageType_EthereumSignMessage = 64 [(wire_in) = true];
+    MessageType_EthereumVerifyMessage = 65 [(wire_in) = true];
+    MessageType_EthereumMessageSignature = 66 [(wire_out) = true];
 
 }
 
