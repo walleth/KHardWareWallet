@@ -15,7 +15,8 @@ import org.kethereum.bip39.model.MnemonicWords
 import org.kethereum.crypto.api.ec.ECDSASignature
 import org.kethereum.crypto.determineRecId
 import org.kethereum.extensions.toBigInteger
-import org.kethereum.extensions.transactions.encodeRLP
+import org.kethereum.extensions.transactions.encode
+import org.kethereum.extensions.transactions.encodeLegacyTxRLP
 import org.kethereum.keccakshortcut.keccak
 import org.kethereum.model.PublicKey
 import org.kethereum.model.SignatureData
@@ -92,7 +93,7 @@ class KHardwareChannel(cardChannel: CardChannel) {
 
     fun signTransaction(tx: Transaction): SignedTransaction {
         val chainId = tx.chain!!
-        val encodeRLPHash = tx.encodeRLP(SignatureData().apply { v = chainId }).keccak()
+        val encodeRLPHash = tx.encode(SignatureData().apply { v = chainId }).keccak()
 
         val (leafList, recId) = sign(encodeRLPHash)
 

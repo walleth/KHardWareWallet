@@ -12,15 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import net.glxn.qrgen.android.QRCode
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.kethereum.DEFAULT_GAS_LIMIT
-import org.kethereum.DEFAULT_GAS_PRICE
 import org.kethereum.bip39.wordlists.WORDLIST_ENGLISH
 import org.kethereum.crypto.signedMessageToKey
 import org.kethereum.crypto.toAddress
-import org.kethereum.extensions.transactions.encodeRLP
+import org.kethereum.extensions.transactions.encode
 import org.kethereum.model.Address
 import org.kethereum.model.ChainId
-import org.kethereum.model.Transaction
 import org.kethereum.model.createTransactionWithDefaults
 import org.komputing.khex.extensions.toHexString
 import org.ligi.compat.HtmlCompat.fromHtml
@@ -164,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                             )
 
                             val signedTx = channel.signTransaction(tx)
-                            val rlp = signedTx.encodeRLP().toHexString()
+                            val rlp = signedTx.encode().toHexString()
 
                             currentInfoText += "\n ${signedTx.signatureData} \n"
                             currentInfoText += "\nSigned transaction <a href='https://api-goerli.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=$rlp'>link</a>"
