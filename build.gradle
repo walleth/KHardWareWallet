@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlin_version = '1.5.31'
-        kethereum_version = '0.83.6'
+        kethereum_version = '0.85.3'
         coroutines_version = '1.4.3'
         wire_version = '3.7.0'
         bc_version = '1.68'
