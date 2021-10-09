@@ -6,7 +6,7 @@ buildscript {
         wire_version = '3.7.0'
         bc_version = '1.68'
         khex_version = '1.1.2'
-        appcompat_version = '1.2.0'
+        appcompat_version = '1.3.1'
         lifecycle_version = '2.3.1'
     }
 
