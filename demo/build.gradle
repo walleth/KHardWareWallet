@@ -41,7 +41,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
 
     implementation "com.github.komputing.kethereum:bip39:$kethereum_version"
     implementation "com.github.komputing.kethereum:bip39_wordlist_en:$kethereum_version"
