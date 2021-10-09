@@ -142,9 +142,9 @@ class MainActivity : AppCompatActivity() {
                             val message = "foo"
                             val signText = channel.signString(message)
 
-                            val revoceredAddress=signedMessageToKey("foo".toByteArray(),signText).toAddress()
+                            val recoveredAddress=signedMessageToKey("foo".toByteArray(),signText).toAddress()
 
-                            currentInfoText += "\nsigned by:$address\nrecovered:$revoceredAddress\n$signText"
+                            currentInfoText += "\nsigned by:$address\nrecovered:$recoveredAddress\n$signText"
                         }
                         R.id.mode_radio_create_transaction -> {
 
