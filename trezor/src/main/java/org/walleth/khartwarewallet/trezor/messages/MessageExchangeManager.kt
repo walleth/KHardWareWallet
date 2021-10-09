@@ -32,7 +32,7 @@ class MessageExchangeManager(private val usb: USBTransport) {
                 request.queueCompat(chunkBuffer, CHUNK_SIZE)
                 usb.connection.requestWait()
                 val okioBuffer = Buffer().apply { write(chunkBuffer.array()) }
-                if (okioBuffer.readByte() != '?'.toByte()) {
+                if (okioBuffer.readByte().toInt() != '?'.code) {
                     invalidChunks++
                 } else {
                     if (msg == null) {
