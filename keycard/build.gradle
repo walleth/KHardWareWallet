@@ -50,7 +50,7 @@ dependencies {
 
     implementation "com.github.komputing:khex:$khex_version"
 
-    implementation 'com.squareup.okio:okio:2.4.0'
+    implementation 'com.squareup.okio:okio:2.10.0'
 
     implementation 'com.payneteasy:ber-tlv:1.0-11'
 
