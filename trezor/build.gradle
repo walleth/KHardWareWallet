@@ -2,6 +2,16 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "maven-publish"
 
+afterEvaluate {
+    publishing {
+        publications {
+            aar(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}
+
 android {
     compileSdkVersion 30
     defaultConfig {

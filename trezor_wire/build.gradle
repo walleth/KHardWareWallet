@@ -2,6 +2,17 @@ apply plugin: "kotlin"
 apply plugin: "com.squareup.wire"
 apply plugin: "maven-publish"
 
+afterEvaluate {
+    publishing {
+        publications {
+            aar(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+}
+
+
 dependencies {
     api "com.squareup.wire:wire-runtime:$wire_version"
 }
